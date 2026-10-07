@@ -26,6 +26,9 @@ $nav = [
     <meta property="og:url" content="<?= e($canonical) ?>">
     <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
+    <meta name="google-adsense-account" content="ca-pub-3758518526780443">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758518526780443"
+     crossorigin="anonymous"></script>
 <?php if (!empty($page['head'])) { echo $page['head']; } ?>
 </head>
 <body>
