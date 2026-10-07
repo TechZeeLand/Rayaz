@@ -1,0 +1,36 @@
+services:
+  nginx:
+    image: nginx:1.29-alpine
+    container_name: ${CONTAINER_NAME:-rayaz-web}
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    depends_on:
+      php:
+        condition: service_healthy
+    volumes:
+      - ./:/var/www/html:ro
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-_}
+      CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-10m}
+    networks:
+      - web
+
+  php:
+    image: php:8.3-fpm-alpine
+    container_name: ${PHP_CONTAINER_NAME:-rayaz-php}
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html:ro
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
