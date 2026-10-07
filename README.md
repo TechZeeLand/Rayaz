@@ -27,3 +27,4 @@ If your Portainer setup does not automatically read the repository `.env`, enter
 This stack intentionally exposes HTTP only. For public production use, put it behind your existing reverse proxy/Cloudflare Tunnel or add TLS termination separately. Do not commit private certificates or secrets to Git.
 # Rayaz
 # Rayaz
+# Rayaz
