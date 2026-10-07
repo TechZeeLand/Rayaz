@@ -1,6 +1,12 @@
 services:
   nginx:
-    image: nginx:1.29-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+      args:
+        SERVER_NAME: ${SERVER_NAME:-_}
+        CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-10m}
+    image: rayaz-web:${IMAGE_TAG:-latest}
     container_name: ${CONTAINER_NAME:-rayaz-web}
     restart: unless-stopped
     ports:
@@ -8,9 +14,6 @@ services:
     depends_on:
       php:
         condition: service_healthy
-    volumes:
-      - ./:/var/www/html:ro
-      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
     environment:
       SERVER_NAME: ${SERVER_NAME:-_}
       CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-10m}
@@ -22,7 +25,9 @@ services:
     container_name: ${PHP_CONTAINER_NAME:-rayaz-php}
     restart: unless-stopped
     volumes:
-      - ./:/var/www/html:ro
+      - ./index.php:/var/www/html/index.php:ro
+      - ./privacy-policy.php:/var/www/html/privacy-policy.php:ro
+      - ./terms-of-service.php:/var/www/html/terms-of-service.php:ro
     healthcheck:
       test: ["CMD-SHELL", "php-fpm -t"]
       interval: 10s

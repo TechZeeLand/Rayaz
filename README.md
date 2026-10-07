@@ -1,30 +1,28 @@
-# Rayaz Website
+# Rayaz
 
-Self-contained Rayaz website deployment using Nginx + PHP-FPM and Docker Compose. It is designed to be deployed directly from a Git repository through Portainer.
+Self-contained PHP website with Nginx and PHP-FPM, designed for deployment through Portainer from a Git repository.
+
+## Portainer deployment
+
+1. Push this repository to Git.
+2. In Portainer, create/update a Stack using the Git repository.
+3. Set the environment variables from `.env.example`.
+4. Use `HTTP_PORT=1030` if you want the site at `http://SERVER-IP:1030`.
+5. Enable **Re-pull image and redeploy** / rebuild when deploying changes so the custom Nginx image is rebuilt.
+
+Nginx is intentionally built from `Dockerfile.nginx`; the site and Nginx configuration are baked into the image rather than depending on host bind mounts.
+
+## Important
+
+When using Portainer's Git deployment, make sure the stack is configured to rebuild the image after repository changes. If an old container remains, redeploy/recreate the stack.
 
 ## Local deployment
 
-1. Copy `.env.example` to `.env`.
-2. Set `HTTP_PORT` and `SERVER_NAME` as needed.
-3. In Portainer, create a Stack from this Git repository.
-4. Deploy the stack.
-5. Open `http://SERVER_IP:HTTP_PORT`.
-
-For example:
-
-```text
-http://192.168.1.100:8080
+```bash
+cp .env.example .env
+docker compose up -d --build
 ```
 
-## Portainer
+Then visit:
 
-Use **Stacks → Add stack → Git repository** and point it at this repository. Portainer will use `docker-compose.yml` and the repository's `.env`/environment settings.
-
-If your Portainer setup does not automatically read the repository `.env`, enter the variables from `.env.example` in the stack's Environment variables section.
-
-## Production HTTPS
-
-This stack intentionally exposes HTTP only. For public production use, put it behind your existing reverse proxy/Cloudflare Tunnel or add TLS termination separately. Do not commit private certificates or secrets to Git.
-# Rayaz
-# Rayaz
-# Rayaz
+`http://localhost:${HTTP_PORT}`
