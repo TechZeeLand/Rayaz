@@ -2,27 +2,23 @@
 
 Self-contained PHP website with Nginx and PHP-FPM, designed for deployment through Portainer from a Git repository.
 
-## Portainer deployment
+## Portainer
 
 1. Push this repository to Git.
-2. In Portainer, create/update a Stack using the Git repository.
-3. Set the environment variables from `.env.example`.
-4. Use `HTTP_PORT=1030` if you want the site at `http://SERVER-IP:1030`.
-5. Enable **Re-pull image and redeploy** / rebuild when deploying changes so the custom Nginx image is rebuilt.
+2. Create/update a Portainer Stack from the Git repository.
+3. Set the variables from `.env.example`.
+4. Use `HTTP_PORT=1030` to expose the site on port 1030.
+5. Redeploy with image rebuilding enabled after repository changes.
 
-Nginx is intentionally built from `Dockerfile.nginx`; the site and Nginx configuration are baked into the image rather than depending on host bind mounts.
+Nginx is built as a custom image. The website and Nginx template are copied into the image, so no host `/Sites` bind mount is required.
 
-## Important
+The Nginx image uses the official `nginx:alpine` `/etc/nginx/templates` mechanism to substitute `SERVER_NAME` and `CLIENT_MAX_BODY_SIZE` at container startup.
 
-When using Portainer's Git deployment, make sure the stack is configured to rebuild the image after repository changes. If an old container remains, redeploy/recreate the stack.
-
-## Local deployment
+## Local
 
 ```bash
 cp .env.example .env
 docker compose up -d --build
 ```
 
-Then visit:
-
-`http://localhost:${HTTP_PORT}`
+Then open `http://localhost:${HTTP_PORT}`.

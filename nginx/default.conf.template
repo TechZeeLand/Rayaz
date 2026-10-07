@@ -3,25 +3,18 @@ server {
     listen [::]:80;
 
     server_name ${SERVER_NAME};
+
     root /var/www/html;
     index index.php index.html;
 
     client_max_body_size ${CLIENT_MAX_BODY_SIZE};
-
-    charset utf-8;
-
-    error_page 404 /404.html;
-
-    location = /404.html {
-        internal;
-    }
 
     location = / {
         try_files /index.php =404;
     }
 
     location / {
-        try_files $$uri $$uri/ $$uri.php?$$query_string =404;
+        try_files $$uri $$uri/ $$uri.php?$query_string =404;
     }
 
     location ~ \.php$ {
@@ -30,22 +23,21 @@ server {
         fastcgi_param SCRIPT_FILENAME $$document_root$$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $$document_root;
         fastcgi_pass php:9000;
-        fastcgi_index index.php;
-    }
-
-    location = /ads.txt {
-        default_type text/plain;
-        try_files $$uri =404;
     }
 
     location ~ /\. {
         deny all;
     }
 
-    location ~* \.(?:css|js|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf)$ {
+    location ~* \.(?:css|js|jpg|jpeg|png|gif|svg|webp|ico|woff|woff2|ttf)$ {
         expires 7d;
         add_header Cache-Control "public, max-age=604800, immutable";
         try_files $$uri =404;
+    }
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
     }
 
     add_header X-Content-Type-Options "nosniff" always;
