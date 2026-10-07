@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rayaz terms of service.">
-    <meta name="theme-color" content="#07070a">
-    <title>Terms of Service — Rayaz</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body>
-<header class="site-header">
-    <div class="container nav">
-        <a class="brand" href="/" aria-label="Rayaz home"><span class="brand-mark">R</span>Rayaz</a>
-        <nav class="nav-links" aria-label="Primary navigation">
-            <a href="/">Home</a>
-            <a href="/privacy-policy.php">Privacy</a>
-        </nav>
-    </div>
-</header>
-<main class="page">
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/bootstrap.php';
+$page = ['title' => 'Terms of Service', 'description' => 'Rayaz terms of service for using Rayaz websites and services.', 'path' => '/terms-of-service'];
+require __DIR__ . '/../includes/header.php';
+?>
+<main class="page" id="main">
     <div class="container">
         <div class="page-header">
             <span class="eyebrow">Legal</span>
@@ -44,7 +30,7 @@
             <h2>8. Limitation of liability</h2>
             <p>To the extent permitted by applicable law, Rayaz and its operators will not be liable for indirect, incidental, special, consequential, or business losses arising from your use of, or inability to use, a Rayaz website or service.</p>
             <h2>9. Privacy</h2>
-            <p>Your use of our websites may involve the processing of information as described in our <a href="/privacy-policy.php">Privacy Policy</a>.</p>
+            <p>Your use of our websites may involve the processing of information as described in our <a href="/privacy-policy">Privacy Policy</a>.</p>
             <h2>10. Changes to these terms</h2>
             <p>We may revise these terms when necessary. Changes become effective when the updated terms are published on this page, unless a different effective date is stated.</p>
             <h2>11. Contact</h2>
@@ -52,6 +38,4 @@
         </article>
     </div>
 </main>
-<footer class="site-footer"><div class="container footer-inner"><div>© <?= date('Y') ?> Rayaz. All rights reserved.</div><div class="footer-links"><a href="/">Home</a><a href="/privacy-policy.php">Privacy Policy</a></div></div></footer>
-</body>
-</html>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

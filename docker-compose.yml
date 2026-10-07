@@ -1,8 +1,28 @@
 services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.php
+    image: rayaz-php:${IMAGE_TAG:-latest}
+    container_name: ${PHP_CONTAINER_NAME:-rayaz-php}
+    restart: unless-stopped
+    environment:
+      SITE_URL: ${SITE_URL:-https://rayaz.org}
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 9000"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - internal
+
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile.nginx
+      dockerfile: docker/Dockerfile.nginx
     image: rayaz-web:${IMAGE_TAG:-latest}
     container_name: ${CONTAINER_NAME:-rayaz-web}
     restart: unless-stopped
@@ -11,25 +31,18 @@ services:
     depends_on:
       php:
         condition: service_healthy
-    networks:
-      - web
-
-  php:
-    image: php:8.3-fpm-alpine
-    container_name: ${PHP_CONTAINER_NAME:-rayaz-php}
-    restart: unless-stopped
-    volumes:
-      - ./index.php:/var/www/html/index.php:ro
-      - ./privacy-policy.php:/var/www/html/privacy-policy.php:ro
-      - ./terms-of-service.php:/var/www/html/terms-of-service.php:ro
+    security_opt:
+      - no-new-privileges:true
     healthcheck:
-      test: ["CMD-SHELL", "php-fpm -t"]
-      interval: 10s
+      # Goes through nginx -> PHP-FPM, so it tests the whole chain.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
+      interval: 30s
       timeout: 5s
-      retries: 5
+      retries: 3
+      start_period: 10s
     networks:
-      - web
+      - internal
 
 networks:
-  web:
+  internal:
     driver: bridge

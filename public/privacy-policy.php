@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rayaz privacy policy.">
-    <meta name="theme-color" content="#07070a">
-    <title>Privacy Policy — Rayaz</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body>
-<header class="site-header">
-    <div class="container nav">
-        <a class="brand" href="/" aria-label="Rayaz home"><span class="brand-mark">R</span>Rayaz</a>
-        <nav class="nav-links" aria-label="Primary navigation">
-            <a href="/">Home</a>
-            <a href="/terms-of-service.php">Terms</a>
-        </nav>
-    </div>
-</header>
-<main class="page">
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/bootstrap.php';
+$page = ['title' => 'Privacy Policy', 'description' => 'Rayaz privacy policy: what information is collected, how it is used, and your choices.', 'path' => '/privacy-policy'];
+require __DIR__ . '/../includes/header.php';
+?>
+<main class="page" id="main">
     <div class="container">
         <div class="page-header">
             <span class="eyebrow">Legal</span>
@@ -52,6 +38,4 @@
         </article>
     </div>
 </main>
-<footer class="site-footer"><div class="container footer-inner"><div>© <?= date('Y') ?> Rayaz. All rights reserved.</div><div class="footer-links"><a href="/">Home</a><a href="/terms-of-service.php">Terms of Service</a></div></div></footer>
-</body>
-</html>
+<?php require __DIR__ . '/../includes/footer.php'; ?>
